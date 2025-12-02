@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Client {
+  id        Int      @id @default(autoincrement())
+  name      String
+  company   String
+  email     String
+  phone     String
+  city      String
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  devis     Devis[]
+  invoices  Invoice[]
+}
+
+model Devis {
+  id        Int      @id @default(autoincrement())
+  number    String
+  amountHt  Float
+  amountTtc Float
+  date      DateTime
+  validity  String
+  status    String
+
+  clientId  Int
+  client    Client   @relation(fields: [clientId], references: [id])
+}
+
+model Invoice {
+  id        Int      @id @default(autoincrement())
+  number    String
+  amountHt  Float
+  amountTtc Float
+  date      DateTime
+  dueDate   DateTime
+  status    String
+
+  clientId  Int
+  client    Client   @relation(fields: [clientId], references: [id])
+}
