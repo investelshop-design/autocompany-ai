@@ -1,10 +1,8 @@
-import { prisma } from "@/lib/prisma";
+import { supabase } from "@/lib/supabaseClient";
 import ClientTable from "./ClientTable";
 
 export default async function ClientsPage() {
-  const clients = await prisma.client.findMany({
-    orderBy: { id: "desc" },
-  });
+  const { data: clients } = await supabase.from("clients").select("*");
 
-  return <ClientTable initialClients={clients} />;
+  return <ClientTable clients={clients || []} />;
 }
